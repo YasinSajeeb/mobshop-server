@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const port = process.env.PORT || 5000;
@@ -12,6 +12,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.pkb5dvc.mongodb.net/?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 
 function verifyJWT(req, res, next) {
@@ -35,25 +38,25 @@ function verifyJWT(req, res, next) {
 
 async function run() {
     try {
-        const laptopCollection = client.db('MobShop').collection('laptops');
+        const mobileCollection = client.db('MobShop').collection('mobiles');
         const productCollection = client.db('MobShop').collection('products');
         const bookingsCollection = client.db('MobShop').collection('bookings');
         const usersCollection = client.db('MobShop').collection('users');
         const paymentsCollection = client.db('MobShop').collection('payments');
 
-        app.get('/laptops', async (req, res) => {
+        app.get('/mobiles', async (req, res) => {
             const query = {};
-            const laptops = await laptopCollection.find(query).toArray();
-            res.send(laptops);
+            const mobiles = await mobileCollection.find(query).toArray();
+            res.send(mobiles);
         });
 
         app.get('/products', async (req, res) => {
             const query = {};
-            const laptops = await productCollection.find(query).toArray();
-            res.send(laptops);
+            const mobiles = await productCollection.find(query).toArray();
+            res.send(mobiles);
         });
 
-        app.get("/laptops/:id", async (req, res) => {
+        app.get("/mobiles/:id", async (req, res) => {
             const id = req.params.id;
             const filterProducts = await productCollection.find({ id: id }).toArray();
             res.send(filterProducts);
