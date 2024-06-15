@@ -39,6 +39,9 @@ function verifyJWT(req, res, next) {
 async function run() {
     try {
         const mobileCollection = client.db('MobShop').collection('mobiles');
+        const productCollection = client.db('MobShop').collection('products');
+        const bookingsCollection = client.db('MobShop').collection('bookings');
+        const usersCollection = client.db('MobShop').collection('users');
 
         app.get('/mobiles', async (req, res) => {
             const query = {};
